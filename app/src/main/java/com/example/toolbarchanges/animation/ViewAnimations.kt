@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.view.View
 import android.view.ViewAnimationUtils
+import android.view.WindowInsets
 import android.view.animation.DecelerateInterpolator
 import kotlin.math.hypot
 
@@ -26,12 +27,12 @@ fun View.startCircularReveal(fromLeft: Boolean, block: () -> Unit) {
         ) {
             v.removeOnLayoutChangeListener(this)
             val cx = if (fromLeft) v.left else v.right
-            val cy = v.bottom
+            val cy = v.top
             val radius = hypot(right.toDouble(), bottom.toDouble()).toInt()
 
             ViewAnimationUtils.createCircularReveal(v, cx, cy, 0f, radius.toFloat()).apply {
                 interpolator = DecelerateInterpolator(2f)
-                duration = 1000
+                duration = 1500
                 addListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator?) {
                         block()
@@ -77,5 +78,43 @@ fun View.findLocationOfCenterOnTheScreen(): IntArray {
     positions[0] = positions[0] + width / 2
     positions[1] = positions[1] + height / 2
     return positions
+}
+
+data class InitialPadding(val left: Int, val top: Int,
+                          val right: Int, val bottom: Int)
+
+private fun recordInitialPaddingForView(view: View) = InitialPadding(
+    view.paddingLeft, view.paddingTop, view.paddingRight, view.paddingBottom)
+
+fun View.doOnApplyWindowInsets(f: (View, WindowInsets, InitialPadding) -> Unit) {
+    // Create a snapshot of the view's padding state
+    val initialPadding = recordInitialPaddingForView(this)
+    // Set an actual OnApplyWindowInsetsListener which proxies to the given
+    // lambda, also passing in the original padding state
+    setOnApplyWindowInsetsListener { v, insets ->
+        f(v, insets, initialPadding)
+        // Always return the insets, so that children can also use them
+        insets
+    }
+    // request some insets
+    requestApplyInsetsWhenAttached()
+}
+
+fun View.requestApplyInsetsWhenAttached() {
+    if (isAttachedToWindow) {
+        // We're already attached, just request as normal
+        requestApplyInsets()
+    } else {
+        // We're not attached to the hierarchy, add a listener to
+        // request when we are
+        addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+            override fun onViewAttachedToWindow(v: View) {
+                v.removeOnAttachStateChangeListener(this)
+                v.requestApplyInsets()
+            }
+
+            override fun onViewDetachedFromWindow(v: View) = Unit
+        })
+    }
 }
 

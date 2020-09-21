@@ -1,55 +1,62 @@
 package com.example.toolbarchanges.fragments.caseC
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
-import com.example.toolbarchanges.ExitWithAnimation
-import com.example.toolbarchanges.MainActivity
-import com.example.toolbarchanges.R
-import com.example.toolbarchanges.RootNavigator
+import com.example.toolbarchanges.*
+import com.example.toolbarchanges.animation.doOnApplyWindowInsets
+import com.example.toolbarchanges.animation.setMarginTop
 import com.example.toolbarchanges.animation.startCircularReveal
+import kotlinx.android.synthetic.main.fragment_blue_layout.view.*
 import timber.log.Timber
 
-class FragmentC : Fragment(R.layout.fragment_c_layout), ExitWithAnimation {
+class FragmentBlue : Fragment(R.layout.fragment_blue_layout), ExitWithAnimation {
 
     override var posX: Int? = null
     override var posY: Int? = null
     override fun isToBeExitedWithAnimation() = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Timber.d("onCreate")
+        Timber.tag(ALL_FRAGMENTS_TAG).d("${this.javaClass.simpleName} onCreate")
         super.onCreate(savedInstanceState)
     }
 
     private lateinit var rootNavigator: RootNavigator
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Timber.d("onActivityCreated")
+        Timber.tag(ALL_FRAGMENTS_TAG).d("${this.javaClass.simpleName} onActivityCreated")
         super.onActivityCreated(savedInstanceState)
         rootNavigator = (requireActivity() as MainActivity).rootNavigator
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Timber.d("onViewCreated")
+        Timber.tag(ALL_FRAGMENTS_TAG).d("${this.javaClass.simpleName} onViewCreated")
         super.onViewCreated(view, savedInstanceState)
+        view.doOnApplyWindowInsets { v, windowInsets, initialPadding ->
+            val params = view.status_view.layoutParams as LinearLayout.LayoutParams
+            params.height = windowInsets.systemWindowInsetTop
+            view.status_view.layoutParams = params
+        }
+
         view.startCircularReveal(true) {
             rootNavigator.removePreviousIfExist()
         }
     }
 
     override fun onDestroyView() {
-        Timber.d("onDestroyView")
+        Timber.tag(ALL_FRAGMENTS_TAG).d("${this.javaClass.simpleName} onDestroyView")
         super.onDestroyView()
     }
 
     override fun onDestroy() {
-        Timber.d("onDestroy")
+        Timber.tag(ALL_FRAGMENTS_TAG).d("${this.javaClass.simpleName} onDestroy")
         super.onDestroy()
     }
 
     companion object {
-        fun newInstance(exitPosition: IntArray) = FragmentC().apply {
+        fun newInstance(exitPosition: IntArray) = FragmentBlue().apply {
             posX = exitPosition[0]
             posY = exitPosition[1]
         }

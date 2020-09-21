@@ -1,10 +1,9 @@
 package com.example.toolbarchanges
 
 import androidx.fragment.app.FragmentManager
-import com.example.toolbarchanges.fragments.caseA.FragmentA
-import com.example.toolbarchanges.fragments.caseB.FragmentB
-import com.example.toolbarchanges.fragments.caseC.FragmentC
-import timber.log.Timber
+import com.example.toolbarchanges.fragments.caseA.FragmentRed
+import com.example.toolbarchanges.fragments.caseB.FragmentGreen
+import com.example.toolbarchanges.fragments.caseC.FragmentBlue
 
 class RootNavigator(
     private val fragmentManager: FragmentManager,
@@ -17,33 +16,33 @@ class RootNavigator(
         prevFragment?.let {
             fragmentManager.beginTransaction()
                 .remove(prevFragment)
-                .commit()
+                .commitAllowingStateLoss()
         }
     }
 
     fun navigateInitialFragmentA() {
         fragmentManager.beginTransaction()
-            .replace(rootLayoutResId, FragmentA())
+            .replace(rootLayoutResId, FragmentRed())
             .commit()
     }
 
-    fun navigateFragmentA(exitPosition: IntArray) {
+    fun navigateFragmentRed(exitPosition: IntArray) {
         fragmentManager.beginTransaction()
-            .add(rootLayoutResId, FragmentA.newInstance(exitPosition))
+            .add(rootLayoutResId, FragmentRed.newInstance(exitPosition))
             //.addToBackStack(null)
             .commit()
     }
 
-    fun navigateFragmentB(exitPosition: IntArray) {
+    fun navigateFragmentGreen(exitPosition: IntArray) {
         fragmentManager.beginTransaction()
-            .add(rootLayoutResId, FragmentB.newInstance(exitPosition))
+            .add(rootLayoutResId, FragmentGreen.newInstance(exitPosition))
             //.addToBackStack(null)
             .commit()
     }
 
-    fun navigateFragmentC(exitPosition: IntArray) {
+    fun navigateFragmentBlue(exitPosition: IntArray) {
         fragmentManager.beginTransaction()
-            .add(rootLayoutResId, FragmentC.newInstance(exitPosition))
+            .add(rootLayoutResId, FragmentBlue.newInstance(exitPosition))
             //.addToBackStack(null)
             .commit()
     }
