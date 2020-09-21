@@ -4,11 +4,22 @@ import androidx.fragment.app.FragmentManager
 import com.example.toolbarchanges.fragments.caseA.FragmentA
 import com.example.toolbarchanges.fragments.caseB.FragmentB
 import com.example.toolbarchanges.fragments.caseC.FragmentC
+import timber.log.Timber
 
 class RootNavigator(
     private val fragmentManager: FragmentManager,
     private val rootLayoutResId: Int //TODO Add ResId annotation
 ) {
+
+    fun removePreviousIfExist() {
+        val removeIndex = fragmentManager.fragments.size - 2
+        val prevFragment = fragmentManager.fragments.getOrNull(removeIndex)
+        prevFragment?.let {
+            fragmentManager.beginTransaction()
+                .remove(prevFragment)
+                .commit()
+        }
+    }
 
     fun navigateInitialFragmentA() {
         fragmentManager.beginTransaction()

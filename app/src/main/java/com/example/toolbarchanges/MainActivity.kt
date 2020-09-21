@@ -22,15 +22,13 @@ interface ExitWithAnimation {
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var rootNavigator: RootNavigator
+    lateinit var rootNavigator: RootNavigator
 
     private lateinit var drawerLayout: DrawerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        enableLogFragmentManager()
         initNavigator()
 
         drawerLayout = findViewById(R.id.root_drawer)
