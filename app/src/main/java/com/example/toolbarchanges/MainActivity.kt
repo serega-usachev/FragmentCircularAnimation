@@ -39,17 +39,14 @@ class MainActivity : AppCompatActivity() {
             drawerLayout.closeDrawer(GravityCompat.START)
             when (it.itemId) {
                 R.id.case1 -> {
-                    showShortToast("Case 1")
                     val centerPosition = window.decorView.findLocationOfCenterOnTheScreen()
                     rootNavigator.navigateFragmentA(centerPosition)
                 }
                 R.id.case2 -> {
-                    showShortToast("Case 2")
                     val centerPosition = window.decorView.findLocationOfCenterOnTheScreen()
                     rootNavigator.navigateFragmentB(centerPosition)
                 }
                 R.id.case3 -> {
-                    showShortToast("Case 3")
                     val centerPosition = window.decorView.findLocationOfCenterOnTheScreen()
                     rootNavigator.navigateFragmentC(centerPosition)
                 }
