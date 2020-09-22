@@ -51,6 +51,14 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
+
+        if (savedInstanceState == null) {
+            rootNavigator.navigateInitialFragmentRed()
+        }
+    }
+
+    fun openDrawer() {
+        drawerLayout.openDrawer(GravityCompat.START)
     }
 
     private fun initNavigator() {
