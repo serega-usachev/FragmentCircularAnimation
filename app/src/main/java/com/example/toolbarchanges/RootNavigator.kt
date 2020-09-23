@@ -20,9 +20,9 @@ class RootNavigator(
         }
     }
 
-    fun navigateInitialFragmentA() {
+    fun navigateInitialFragmentRed() {
         fragmentManager.beginTransaction()
-            .replace(rootLayoutResId, FragmentRed())
+            .add(rootLayoutResId, FragmentRed())
             .commit()
     }
 

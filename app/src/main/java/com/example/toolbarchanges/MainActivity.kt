@@ -26,11 +26,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        initNavigator()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         makeStatusBarTransparent()
 
-        initNavigator()
         drawerLayout = findViewById(R.id.root_drawer)
 
         findViewById<NavigationView>(R.id.root_nav_view).setNavigationItemSelectedListener {
@@ -51,6 +51,14 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
+
+        if (savedInstanceState == null) {
+            rootNavigator.navigateInitialFragmentRed()
+        }
+    }
+
+    fun openDrawer() {
+        drawerLayout.openDrawer(GravityCompat.START)
     }
 
     private fun initNavigator() {
